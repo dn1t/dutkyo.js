@@ -1,12 +1,14 @@
 import { onMount } from "solid-js";
-import { Dutkyo, type DutkyoOptions } from "../dutkyo";
+import { useDutkyo } from "../context";
+import type { DutkyoOptions } from "../dutkyo";
 
 export function Player(props: DutkyoOptions) {
   let ref!: HTMLCanvasElement;
+  const { dutkyo } = useDutkyo();
 
-  onMount(async () => {
-    const dutkyo = await new Dutkyo(props).init(ref);
-    dutkyo.loadProject();
+  onMount(() => {
+    if (dutkyo.initialized) throw new Error("Dutkyo is already initialized");
+    dutkyo.init(ref).then(() => dutkyo.loadProject());
   });
 
   return <canvas ref={ref} style={{ width: "480px" }} />;

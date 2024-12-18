@@ -1,15 +1,25 @@
 import { Player } from "./components/player";
-import type { DutkyoOptions } from "./dutkyo";
+import { useDutkyo } from "./context";
 
-interface WorkspaceOptions {
-  options: DutkyoOptions;
-}
+export function Workspace() {
+  const { dutkyo } = useDutkyo();
 
-export function Workspace(props: WorkspaceOptions) {
   return (
-    <div>
-      <Player {...props.options} />
-      <div>Hello, world!</div>
+    <div class="">
+      <div class="flex">
+        <div>
+          <Player {...dutkyo.options} />
+          <div class="flex">
+            <button type="button" onClick={() => dutkyo}>
+              Start
+            </button>
+            <button type="button" onClick={() => dutkyo}>
+              Stop
+            </button>
+          </div>
+        </div>
+        <div>Hello, world!</div>
+      </div>
     </div>
   );
 }
