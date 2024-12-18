@@ -1,19 +1,30 @@
 import { Application } from "pixi.js";
+import type { ObjectContainer } from "./classes/object-container";
+import type { SceneContainer } from "./classes/scene-container";
+import type { VariableContainer } from "./classes/variable-container";
+import * as methods from "./methods";
 
 export interface DutkyoOptions {}
 
-export class Dutkyo {
+class _Dutkyo {
   app = new Application();
+  options: DutkyoOptions;
+  initialized = false;
 
-  async init(canvas: HTMLCanvasElement, options: DutkyoOptions) {
-    const offscreenCanvas = canvas.transferControlToOffscreen();
-    await this.app.init({
-      canvas: offscreenCanvas,
-      width: 640,
-      height: 360,
-      background: "white",
-    });
+  projectId: string | null = null;
+  speed = 60;
 
-    return this.app.canvas;
+  objectContainer!: ObjectContainer;
+  variableContainer!: VariableContainer;
+  sceneContainer!: SceneContainer;
+
+  constructor(options: DutkyoOptions) {
+    this.options = options;
+    Object.assign(this, methods);
   }
 }
+
+export type Dutkyo = InstanceType<typeof _Dutkyo> & typeof methods;
+export const Dutkyo = _Dutkyo as {
+  new (...args: ConstructorParameters<typeof _Dutkyo>): Dutkyo;
+};

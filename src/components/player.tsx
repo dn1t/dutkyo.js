@@ -4,9 +4,10 @@ import { Dutkyo, type DutkyoOptions } from "../dutkyo";
 export function Player(props: DutkyoOptions) {
   let ref!: HTMLCanvasElement;
 
-  onMount(() => {
-    new Dutkyo().init(ref, props);
+  onMount(async () => {
+    const dutkyo = await new Dutkyo(props).init(ref);
+    dutkyo.loadProject();
   });
 
-  return <canvas ref={ref} />;
+  return <canvas ref={ref} style={{ width: "480px" }} />;
 }
